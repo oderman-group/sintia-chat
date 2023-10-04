@@ -1,0 +1,30 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npm servidor/index.js",
+    "dev": "nodemon servidor/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cros": "^1.0.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "promise-mysql": "^5.2.0",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.0",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.22.20",
+    "nodemon": "^3.0.1"
+  }
+}
