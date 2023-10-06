@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "npm servidor/index.js",
-    "dev": "nodemon servidor/index.js"
+    "start": "node Servidor/index.js",
+    "dev": "nodemon Servidor/index.js"
   },
   "keywords": [],
   "author": "",

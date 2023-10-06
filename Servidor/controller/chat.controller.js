@@ -11,6 +11,7 @@ const listarChat = async (req, res) => {
             "ORDER BY chat_fecha_registro ASC");
         res.json(result);
     } catch (error) {
+        console.error('Error al analizar la respuesta del servidor:', error);
         res.status(500);
         res.send(error.message);
     }

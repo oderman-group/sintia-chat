@@ -62,15 +62,19 @@ io.on("connection", (socket) => {
         let salaChat=body["salaChat"];
         let sala=body["sala"];
         if (io.sockets.adapter.rooms.has(salaChat)) {
+
             console.log(`Sala '${salaChat}' existe.`);
             io.to(body["salaChat"]).emit('nuevo_mensaje_chat', {
                 body,
                 from: socket.id.slice(8),
                  });  
+
           } else {
+
             console.log(`Sala '${salaChat}' no existe.`);
             console.log(`se enviara la notificacion a la sala  ${sala} `);
             io.to(sala).emit('notificacion_chat',body);  
+            
           }
       
              
