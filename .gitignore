@@ -1,4 +1,3 @@
 node_modules
 .vscode
-Servidor/config.js
-Servidor/.env
+.env
