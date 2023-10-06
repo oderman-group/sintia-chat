@@ -1,5 +1,5 @@
-import server from './app.js';
-import { PORT } from "./config.js";
+import server from './Servidor/app.js';
+import { PORT } from "./Servidor/config.js";
 
 
 const main = () => {   
