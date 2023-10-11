@@ -1,8 +1,8 @@
-import { Server } from 'socket.io';
-import { methods  as metodosChat} from "./controller/chat.controller.js";
+const SocketIo = require('socket.io');
+const  { getlistarChat ,insertMessageCaht,contarNotificaciones} = require('./controller/chat.controller.js');
 
 function configureSocketIO(server) {
-  const io = new Server(server, {});
+  const io = SocketIo(server);
   io.on("connection", (socket) => {
     console.log("usuario conectado con Skect id: " + socket.id);
 
@@ -21,13 +21,13 @@ function configureSocketIO(server) {
       let salaChat = body["salaChat"];
       if (io.sockets.adapter.rooms.has(salaChat)) {
         console.log(`listando chat de sala '${salaChat}'`);
-        metodosChat.getlistarChat(body,socket);
+        getlistarChat(body,socket);
       } 
     });
 
     socket.on("enviar_mensaje_chat", (body) => {
       // console.log("recibi un mensaje del id: " + socket.id + " message:  " + body["chat_mensaje"] + " - para la sala del chat:" + body["salaChat"] + " y sala " + body["sala"]);
-      metodosChat.insertMessageCaht(body);
+      insertMessageCaht(body);
       let salaChat = body["salaChat"];
       let sala = body["sala"];
       if (io.sockets.adapter.rooms.has(salaChat)) {
@@ -41,15 +41,13 @@ function configureSocketIO(server) {
         console.log(`se enviara la notificacion a la sala  ${sala} `);
         if (io.sockets.adapter.rooms.has(sala)) {
           io.to(sala).emit('notificacion_chat', body);
-          metodosChat.contarNotificaciones(body,socket);
+          contarNotificaciones(body,socket);
         }else{
           console.log(`no se envia a la Sala '${sala}' por que tampoco existe.`);
         }
         
 
       }
-
-
       // socket.broadcast.emit(body["salaChat"], {
       //     body,
       //     from: socket.id.slice(8),
@@ -77,4 +75,5 @@ function configureSocketIO(server) {
   });
 }
 
-export default configureSocketIO;
+module.exports = configureSocketIO;
+

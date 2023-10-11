@@ -1,16 +1,14 @@
-import express from "express";
+const express = require('express');
+const { PORT } = require('./config.js');
 // import morgan from "morgan";
+const http = require('http');
+const cors = require('cors');
 
-import http from "http";
-
-import { PORT } from "./config.js";
-import cors from "cors";
-
-import chat from "./routes/chat.routers.js";
-import { methods  as metodosChat} from "./controller/chat.controller.js";
+// import chat from "./routes/chat.routers.js";
+// import { methods  as metodosChat} from "./controller/chat.controller.js";
 
 
-import { Server } from 'socket.io';
+// import { Server } from 'socket.io';
 
 // Initializations
 const app = express();
@@ -36,18 +34,11 @@ app.use(cors());
 
 
 // configuiracion Socket
-import configureSocketIO from './sockets.js';
-
+const configureSocketIO = require('./sockets.js');
+// import configureSocketIO from './sockets.js';
  configureSocketIO(server);
 
 
 
 
-
-// app.use((req, res, next) => {
-//     req.io = io;
-//     req.com = getConnection;
-//     next();
-// });
-
-export default server;
+module.exports = server;

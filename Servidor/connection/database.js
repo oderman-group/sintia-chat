@@ -1,6 +1,5 @@
-import mysql from 'promise-mysql';
-import config from '../config.js';
-
+const mysql = require('promise-mysql');
+const config = require('../config.js');
 
 
 const getConnection=async (req, res) =>{
@@ -13,7 +12,6 @@ const getConnection=async (req, res) =>{
     return connection;
 }
 
-
-export const methods = {
+module.exports = {
     getConnection
 };

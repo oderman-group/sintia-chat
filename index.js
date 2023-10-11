@@ -1,10 +1,7 @@
-import server from './Servidor/app.js';
-import { PORT } from "./Servidor/config.js";
+const server = require('./Servidor/app.js');
+const { PORT } = require('./Servidor/config.js');
 
+ 
+server.listen(PORT);
+console.log(`El servidor inicio en el puerto ${PORT}`);
 
-const main = () => {   
-    server.listen(PORT);
-    console.log(`El servidor inicio en el puerto ${PORT}`);
-};
-
-main();
