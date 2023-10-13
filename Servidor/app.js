@@ -21,7 +21,7 @@ const server = http.createServer(app);
 app.set("port", PORT);
 
 // Middlewares
-app.get('/sintia-chat', (req, res) => { res.send('<h1>SINTIA API</h1>') });
+app.get('/sintia-chat-server', (req, res) => { res.send('<h1>SINTIA API</h1>') });
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
