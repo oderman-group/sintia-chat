@@ -2,6 +2,7 @@ const SocketIo = require('socket.io');
 const { getlistarChat,
   insertMessageCaht,
   contarNotificaciones,
+  contarMisNotificaciones,
   actualizarVisto } = require('./controller/chat.controller.js');
 
 function configureSocketIO(server) {
@@ -24,10 +25,18 @@ function configureSocketIO(server) {
       var chat_visto = await contarNotificaciones(body, socket);// consulto cuantos visto tiene el susuario para notificar
       body["cantidad"] = chat_visto;// lo asigno al body para enviarlo
       socket.broadcast.emit(sala, body);
+      var chat_mis_vistos = await contarMisNotificaciones(body, socket);// consulto cuantos visto tiene el susuario para notificar
+      socket.broadcast.emit("notificacion_"+sala, chat_mis_vistos);
     });
 
     socket.on("ver_mensaje", async (body) => {
       await actualizarVisto(body);
+    });
+
+    socket.on("actualizar_notificaciones", async (body) => {
+      let miSala = body["miSala"];
+      var chat_mis_vistos = await contarMisNotificaciones(body);// consulto cuantos visto tiene el susuario para notificar
+      socket.emit("notificacion_"+miSala, chat_mis_vistos);
     });
 
     socket.on("listar_mensajes_chat", (body) => {// escuhamos pedido para listar las conversaciones 

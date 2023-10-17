@@ -8,7 +8,7 @@ const actualizarVisto = async (req, res) =>{
         }
         const connection = await connectiondb.getConnection();
         const result = await connection.query("UPDATE mobiliar_sintia_social.chat SET chat_visto = 0 WHERE chat_id =" + chat_id);
-        console.log(`se actualizo el chat con id ${chat_id}`);   
+        console.log(`se actualizo el chat con id ${chat_id} `); 
         connection.end();
     } catch (error) {
         console.log(error);
@@ -39,8 +39,8 @@ const insertMessageCaht = async (req, res) =>{
 }
 const contarNotificaciones = async (req, res) =>{
     try {
-        const { chat_mensaje, chat_remite_usuario, chat_destino_usuario } = req;
-        if (chat_mensaje === undefined || chat_remite_usuario === undefined || chat_destino_usuario === undefined) {
+        const {chat_remite_usuario, chat_destino_usuario } = req;
+        if (chat_remite_usuario === undefined || chat_destino_usuario === undefined) {
             res.status(400).json({ result: " Los campos de envios no estan completos" });
         }
         const connection = await connectiondb.getConnection();
@@ -55,6 +55,25 @@ const contarNotificaciones = async (req, res) =>{
         console.log(error);
         res.status(500);
         res.send(error.message);
+    }
+}
+
+const contarMisNotificaciones = async (req) =>{
+    try {
+        const { chat_destino_usuario } = req;
+        if ( chat_destino_usuario === undefined) {
+            console.log({ result: " Los campos de envios no estan completos" });
+        }
+        const connection = await connectiondb.getConnection();
+        const result = await connection.query("SELECT COUNT(*) AS cantidad FROM mobiliar_sintia_social.chat WHERE " +
+        "chat_destino_usuario = '" + chat_destino_usuario + "' AND " +
+        "chat_visto = 1 "+
+        "ORDER BY chat_fecha_registro ASC");    
+        console.log(`en total hay  (${result[0]["cantidad"]}) mensajes sin leer de ${chat_destino_usuario}`);        
+        connection.end();
+        return result[0]["cantidad"];
+    } catch (error) {
+        console.log(error);
     }
 }
 
@@ -78,5 +97,6 @@ module.exports = {
     insertMessageCaht,
     contarNotificaciones,
     getlistarChat,
-    actualizarVisto
+    actualizarVisto,
+    contarMisNotificaciones
 };
