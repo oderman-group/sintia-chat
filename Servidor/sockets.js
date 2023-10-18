@@ -31,11 +31,16 @@ function configureSocketIO(server) {
 
     socket.on("ver_mensaje", async (body) => {
       await actualizarVisto(body);
+      let salaChat = body["salaChat"];
+      let chaId = body["chat_id"];
+      console.log(socket.id + " Envia visto a la sala: poner_visto_" + salaChat+" con ID:"+chaId);
+      io.emit("poner_visto_"+salaChat, chaId);
     });
 
     socket.on("actualizar_notificaciones", async (body) => {
-      let miSala = body["miSala"];
+      let miSala = body["miSala"];      
       var chat_mis_vistos = await contarMisNotificaciones(body);// consulto cuantos visto tiene el susuario para notificar
+      console.log(socket.id + " se actualiza la sala :" + miSala+" con :("+chat_mis_vistos+") notificaciones");
       socket.emit("notificacion_"+miSala, chat_mis_vistos);
     });
 
