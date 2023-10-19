@@ -4,7 +4,14 @@ const { PORT } = require('./config.js');
 const http = require('http');
 const cors = require('cors');
 var fs = require('fs');
-const https = require('https'); 
+const https = require('https');
+
+const options = {
+    key: fs.readFileSync('key.key'),
+    cert: fs.readFileSync('cert.crt'),
+    requestCert:false,
+    rejectUnauthorized:false
+};
 
 
 
@@ -16,12 +23,9 @@ const https = require('https');
 
 // Initializations
 const app = express();
-const server = http.createServer(app);
+// const server = http.createServer(app);
 
-const server2 = https.createServer({
-//   key: fs.readFileSync('path/key.pem'),
-//   cert: fs.readFileSync('path/cert.pem')
-}, app);
+const server = https.createServer(options,app);
 
 
 //Settings
