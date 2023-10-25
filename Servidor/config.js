@@ -10,4 +10,5 @@ module.exports = {
     database:process.env.DATABASE ,
     password:process.env.PASSWORD,
     PORT:process.env.PORT,
+    BD_SOCIAL:process.env.BD_SOCIAL,
    };
