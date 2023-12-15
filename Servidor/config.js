@@ -1,12 +1,14 @@
-import { config } from "dotenv";
+const config = require('dotenv');
 
-config();
+config.config();
 
-export const PORT =  process.env.PORT;
 
-export default {
- host: process.env.HOST ,
- username:process.env.USAERNAME,
- database:process.env.DATABASE ,
- password:process.env.PASSWORD 
-};
+
+module.exports = {
+    host: process.env.HOST ,
+    username:process.env.USAERNAME,
+    database:process.env.DATABASE ,
+    password:process.env.PASSWORD,
+    PORT:process.env.PORT,
+    BD_SOCIAL:process.env.BD_SOCIAL,
+   };
