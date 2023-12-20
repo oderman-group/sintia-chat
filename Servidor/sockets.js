@@ -3,7 +3,9 @@ const { getlistarChat,
   insertMessageCaht,
   contarNotificaciones,
   contarMisNotificaciones,
-  actualizarVisto } = require('./controller/chat.controller.js');
+  actualizarVisto,
+  insertMessageCorreo,
+  contarCorreo } = require('./controller/chat.controller.js');
 
 function configureSocketIO(server) {
   const io = SocketIo(server);
@@ -45,7 +47,17 @@ function configureSocketIO(server) {
       socket.emit("notificacion_"+miSala, chat_mis_vistos);
     });
 
- 
+    socket.on("enviar_mensaje_correo", async (data) => {
+      ema_id    = await insertMessageCorreo(data);
+      numCorreo = await contarCorreo(data);
+      data["ema_id"] = ema_id;
+      data["numCorreo"] = numCorreo;
+      if (data["ema_id"] != null || data["ema_id"] !== '' || data["ema_id"] !== undefined) {
+        io.emit('recibio_correo_'+data['receptor']+'_'+data['institucion'], data);
+      }
+      io.emit('envio_correo_'+data['emisor']+'_'+data['institucion'], data);
+    });
+
     socket.on("disconnect", (body) => {
       console.log("se descoencto un usuario socket id: " + socket.id);
     });
