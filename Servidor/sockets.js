@@ -5,7 +5,8 @@ const { getlistarChat,
   contarMisNotificaciones,
   actualizarVisto,
   insertMessageCorreo,
-  contarCorreo } = require('./controller/chat.controller.js');
+  contarCorreo,
+  consultarNombre } = require('./controller/chat.controller.js');
 
 function configureSocketIO(server) {
   const io = SocketIo(server);
@@ -56,6 +57,12 @@ function configureSocketIO(server) {
         io.emit('recibio_correo_'+data['receptor']+'_'+data['institucion'], data);
       }
       io.emit('envio_correo_'+data['emisor']+'_'+data['institucion'], data);
+    });
+
+    socket.on("solicitud_desbloqueo", async (data) => {
+      nombre = await consultarNombre(data);
+      data["nombre"] = nombre;
+      socket.broadcast.emit('notificar_solicitud_desbloqueo_'+data['institucion'], data);
     });
 
     socket.on("disconnect", (body) => {
