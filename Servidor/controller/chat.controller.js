@@ -1,5 +1,5 @@
 const connectiondb = require('../connection/database.js');
-const {BD_SOCIAL} = require('../config.js');
+const {BD_SOCIAL,database,BD_ACADEMICA,BD_ACADEMICA_PROD} = require('../config.js');
 
 const actualizarVisto = async (req, res) =>{
     try {
@@ -81,11 +81,68 @@ const contarMisNotificaciones = async (req) =>{
     }
 }
 
+const insertMessageCorreo = async (req, res) =>{
+    try {
+        let { emisor, receptor, asunto, contenido, institucion, year} = req;
+        if (emisor === undefined || receptor === undefined || asunto === undefined || contenido === undefined || institucion === undefined || year  === undefined) {
+            res.status(400).json({ result: " Los campos de envios no estan completos" });
+        }
+        const connection = await connectiondb.getConnection();
+        const result = await connection.query("INSERT INTO "+database+".social_emails(ema_de, ema_para, ema_asunto, ema_contenido, ema_fecha, ema_visto, ema_eliminado_de, ema_eliminado_para, ema_institucion, ema_year) VALUES ('" + emisor + "','" + receptor + "','" + asunto + "','" + contenido + "',now(), 0, 0, 0,'" + institucion + "','" + year + "') RETURNING ema_id");
+        connection.end();
+        return result[0]["ema_id"];
+    } catch (error) {
+        console.log(error);
+        res.status(500);
+        res.send(error.message);
+    }
+}
+
+const contarCorreo = async (req, res) =>{
+    try {
+        let { emisor, receptor, asunto, contenido, institucion, year} = req;
+        if (emisor === undefined || receptor === undefined || asunto === undefined || contenido === undefined || institucion === undefined || year  === undefined) {
+            res.status(400).json({ result: " Los campos de envios no estan completos" });
+        }
+        const connection = await connectiondb.getConnection();
+        const result = await connection.query("SELECT COUNT(*) AS cantidad FROM "+database+".social_emails WHERE ema_para="+receptor+" AND ema_institucion="+institucion+" AND ema_year="+year+" AND ema_visto=0");
+        connection.end();
+        return result[0]["cantidad"];
+    } catch (error) {
+        console.log(error);
+        res.status(500);
+        res.send(error.message);
+    }
+}
+
+const consultarNombre = async (req, res) =>{
+    try {
+        let { idRecurso, institucion, year, ENVIROMENT} = req;
+        if (idRecurso === undefined || institucion === undefined || year  === undefined) {
+            res.status(400).json({ result: " Los campos de envios no estan completos" });
+        }
+        var ACADEMICA_BD = BD_ACADEMICA;
+        if(ENVIROMENT=='PROD'){
+            var ACADEMICA_BD = BD_ACADEMICA_PROD;
+        }
+        const connection = await connectiondb.getConnection();
+        const result = await connection.query("SELECT CONCAT(mat_primer_apellido,' ',mat_segundo_apellido,' ',mat_nombres,' ',mat_nombre2) AS nombre FROM "+ACADEMICA_BD+".academico_matriculas WHERE mat_id='"+idRecurso+"' AND institucion='"+institucion+"' AND year='"+year+"'");
+        connection.end();
+        return result[0]["nombre"];
+    } catch (error) {
+        console.log(error);
+        res.status(500);
+        res.send(error.message);
+    }
+}
 
 
 module.exports = {
     insertMessageCaht,
     contarNotificaciones,
     actualizarVisto,
-    contarMisNotificaciones
+    contarMisNotificaciones,
+    insertMessageCorreo,
+    contarCorreo,
+    consultarNombre
 };
