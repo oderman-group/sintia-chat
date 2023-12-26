@@ -121,8 +121,12 @@ const consultarNombre = async (req, res) =>{
         if (idRecurso === undefined || institucion === undefined || year  === undefined) {
             res.status(400).json({ result: " Los campos de envios no estan completos" });
         }
+        var ACADEMICA_BD = BD_ACADEMICA;
+        if(ENVIROMENT=='PROD'){
+            var ACADEMICA_BD = BD_ACADEMICA_PROD;
+        }
         const connection = await connectiondb.getConnection();
-        const result = await connection.query("SELECT CONCAT(mat_primer_apellido,' ',mat_segundo_apellido,' ',mat_nombres,' ',mat_nombre2) AS nombre FROM "+BD_ACADEMICA+".academico_matriculas WHERE mat_id='"+idRecurso+"' AND institucion='"+institucion+"' AND year='"+year+"'");
+        const result = await connection.query("SELECT CONCAT(mat_primer_apellido,' ',mat_segundo_apellido,' ',mat_nombres,' ',mat_nombre2) AS nombre FROM "+ACADEMICA_BD+".academico_matriculas WHERE mat_id='"+idRecurso+"' AND institucion='"+institucion+"' AND year='"+year+"'");
         connection.end();
         return result[0]["nombre"];
     } catch (error) {
