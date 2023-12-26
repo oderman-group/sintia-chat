@@ -117,7 +117,7 @@ const contarCorreo = async (req, res) =>{
 
 const consultarNombre = async (req, res) =>{
     try {
-        let { idRecurso, institucion, year} = req;
+        let { idRecurso, institucion, year, ENVIROMENT} = req;
         if (idRecurso === undefined || institucion === undefined || year  === undefined) {
             res.status(400).json({ result: " Los campos de envios no estan completos" });
         }
