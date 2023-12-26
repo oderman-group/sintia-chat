@@ -1,5 +1,5 @@
 const connectiondb = require('../connection/database.js');
-const {BD_SOCIAL,database,BD_ACADEMICA} = require('../config.js');
+const {BD_SOCIAL,database,BD_ACADEMICA,BD_ACADEMICA_PROD} = require('../config.js');
 
 const actualizarVisto = async (req, res) =>{
     try {
