@@ -105,7 +105,7 @@ const contarCorreo = async (req, res) =>{
             res.status(400).json({ result: " Los campos de envios no estan completos" });
         }
         const connection = await connectiondb.getConnection();
-        const result = await connection.query("SELECT COUNT(*) AS cantidad FROM "+database+".social_emails WHERE ema_para="+receptor+" AND ema_institucion="+institucion+" AND ema_year="+year+" AND ema_visto=0");
+        const result = await connection.query("SELECT COUNT(*) AS cantidad FROM "+database+".social_emails WHERE ema_para='"+receptor+"' AND ema_institucion='"+institucion+"' AND ema_year='"+year+"' AND ema_visto=0");
         connection.end();
         return result[0]["cantidad"];
     } catch (error) {
