@@ -6,7 +6,8 @@ const { getlistarChat,
   actualizarVisto,
   insertMessageCorreo,
   contarCorreo,
-  consultarNombre } = require('./controller/chat.controller.js');
+  consultarNombre,
+  insertMessageModulosDev } = require('./controller/chat.controller.js');
 
 function configureSocketIO(server) {
   const io = SocketIo(server);
@@ -63,6 +64,11 @@ function configureSocketIO(server) {
       nombre = await consultarNombre(data);
       data["nombre"] = nombre;
       socket.broadcast.emit('notificar_solicitud_desbloqueo_'+data['institucion'], data);
+    });
+
+    socket.on("enviar_mensajes_modulos_dev", async (data) => {
+      await insertMessageModulosDev(data);
+      io.emit('recibio_correo_modulos_dev_1_22', data);
     });
 
     socket.on("disconnect", (body) => {
