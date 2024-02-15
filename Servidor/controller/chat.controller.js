@@ -136,6 +136,31 @@ const consultarNombre = async (req, res) =>{
     }
 }
 
+const insertMessageModulosDev = async (req, res) =>{
+    try {
+        let { asunto, contenido, year} = req;
+        if (asunto === undefined || contenido === undefined || year  === undefined) {
+            res.status(400).json({ result: " Los campos de envios no estan completos" });
+        }
+        
+        const connection = await connectiondb.getConnection();
+
+        const usuariosResult = await connection.query("SELECT uss_id FROM mobiliar_general.usuarios WHERE uss_tipo=1 AND institucion=22 AND year='"+year+"'");
+        
+        for (let i = 0; i < usuariosResult.length; i++) {
+            const receptor = usuariosResult[i].uss_id;
+            
+            await connection.query("INSERT INTO "+database+".social_emails(ema_de, ema_para, ema_asunto, ema_contenido, ema_fecha, ema_visto, ema_eliminado_de, ema_eliminado_para, ema_institucion, ema_year) VALUES ('1', '"+receptor+"', '" + asunto + "', '" + contenido + "', now(), 0, 0, 0, '22', '"+year+"')");
+        }
+
+        connection.end();
+    } catch (error) {
+        console.log(error);
+        res.status(500);
+        res.send(error.message);
+    }
+}
+
 
 module.exports = {
     insertMessageCaht,
@@ -144,5 +169,6 @@ module.exports = {
     contarMisNotificaciones,
     insertMessageCorreo,
     contarCorreo,
-    consultarNombre
+    consultarNombre,
+    insertMessageModulosDev
 };
