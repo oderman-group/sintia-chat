@@ -1,7 +1,6 @@
 const server = require('./Servidor/app.js')
 const { PORT } = require('./Servidor/config.js');
 const os = require('os');
-const express = require('express');
 var http = require('http');
 
 
