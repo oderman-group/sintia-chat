@@ -1,5 +1,4 @@
 const express  = require('express');
-const { PORT } = require('./config.js');
 // import morgan from "morgan";
 const http     = require('http');
 const cors     = require('cors');
@@ -18,7 +17,6 @@ const options = {
 };
 
 //Settings
-app.set("port", PORT);
 
 app.use(express.static(path.join(__dirname, '..')));
 
