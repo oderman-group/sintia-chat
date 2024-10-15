@@ -44,8 +44,14 @@ function configureSocketIO(server) {
 
     socket.on("notificar_noticia", async (body) => {
       let institucion = body["institucion"];
-      console.log(socket.id + " se envia a la institucion " + institucion);
-      socket.broadcast.emit("ver_noticia_"+institucion,body);
+      let global = body["global"];
+      console.log(socket.id + " se envia a la institucion " + institucion+ " de forma global:"+global);
+      if(global == 'NO'){
+        socket.broadcast.emit("ver_noticia_"+institucion,body);
+      }else{        
+        socket.broadcast.emit("ver_noticia",body);
+      }
+      
     });
 
     socket.on("actualizar_notificaciones", async (body) => {
