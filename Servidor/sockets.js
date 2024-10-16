@@ -13,7 +13,7 @@ function configureSocketIO(server) {
   const io = SocketIo(server);
 
   io.on("connection", (socket) => {// se contrala la coneccion realizada desde el clinete
-    console.log(socket.id + " usuario conectado en Sintia");
+    console.log(socket.id + "Usuario conectado en Sintia");
 
     socket.on("enviar_mensaje_chat", async (body) => {
       chat_id=await insertMessageCaht(body);
