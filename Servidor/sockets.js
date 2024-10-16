@@ -42,6 +42,18 @@ function configureSocketIO(server) {
       io.emit("poner_visto_"+salaChat, chaId);
     });
 
+    socket.on("notificar_noticia", async (body) => {
+      let institucion = body["institucion"];
+      let global = body["global"];
+      console.log(socket.id + " se envia a la institucion " + institucion+ " de forma global:"+global);
+      if(global == 'NO'){
+        socket.broadcast.emit("ver_noticia_"+institucion,body);
+      }else{        
+        socket.broadcast.emit("ver_noticia",body);
+      }
+      
+    });
+
     socket.on("actualizar_notificaciones", async (body) => {
       let miSala = body["miSala"];      
       var chat_mis_vistos = await contarMisNotificaciones(body);// consulto cuantos visto tiene el susuario para notificar
