@@ -13,7 +13,7 @@ function configureSocketIO(server) {
   const io = SocketIo(server);
 
   io.on("connection", (socket) => {// se contrala la coneccion realizada desde el clinete
-    console.log(socket.id + " usuario conectado");
+    console.log(socket.id + " usuario conectado en Sintia");
 
     socket.on("enviar_mensaje_chat", async (body) => {
       chat_id=await insertMessageCaht(body);
@@ -84,7 +84,7 @@ function configureSocketIO(server) {
     });
 
     socket.on("disconnect", (body) => {
-      console.log("se descoencto un usuario socket id : " + socket.id);
+      console.log("se descoencto un usuario socket id: " + socket.id);
     });
 
   });
