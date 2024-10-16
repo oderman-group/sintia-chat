@@ -84,7 +84,7 @@ function configureSocketIO(server) {
     });
 
     socket.on("disconnect", (body) => {
-      console.log("se descoencto un usuario socket id: ---->" + socket.id);
+      console.log("se descoencto un usuario socket id:--------->" + socket.id);
     });
 
   });
