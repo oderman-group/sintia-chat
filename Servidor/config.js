@@ -13,4 +13,6 @@ module.exports = {
     BD_SOCIAL:process.env.BD_SOCIAL,
     BD_ACADEMICA:process.env.BD_ACADEMICA,
     BD_ACADEMICA_PROD:process.env.BD_ACADEMICA_PROD,
-   };
+    BD_GENERAL:process.env.BD_GENERAL,
+    BD_GENERAL_PROD:process.env.BD_GENERAL_PROD,
+};
